@@ -15,7 +15,15 @@ import {
   AlertTriangle,
   Heart,
   Star,
+  X,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const excuseCategories = {
   "Llegar Tarde": {
@@ -139,10 +147,12 @@ export default function ExcuseGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showReaction, setShowReaction] = useState(false);
   const [reaction, setReaction] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const generateExcuse = (category: string) => {
     setIsGenerating(true);
     setSelectedCategory(category);
+    setIsDialogOpen(true);
 
     setTimeout(() => {
       const excuses =
@@ -230,65 +240,68 @@ export default function ExcuseGenerator() {
         </div>
       </div>
 
-      {(currentExcuse || isGenerating) && (
-        <div className="max-w-3xl mx-auto mb-8">
-          <Card className="border-2 border-gray-700 bg-gray-800 shadow-xl">
-            <CardHeader className="text-center pb-4">
-              <div className="flex items-center justify-center gap-2 mb-2">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[600px] bg-gray-800 border-2 border-gray-700 rounded-lg text-white">
+          <DialogHeader>
+            <div className="flex justify-between items-center">
+              <DialogTitle className="text-xl flex items-center gap-2">
                 <AlertTriangle className="w-6 h-6 text-yellow-400" />
-                <CardTitle className="text-xl">Tu Excusa Épica</CardTitle>
+                Tu Excusa Épica
                 <AlertTriangle className="w-6 h-6 text-yellow-400" />
-              </div>
-              {selectedCategory && (
+              </DialogTitle>
+            </div>
+            {selectedCategory && (
+              <div className="flex justify-center">
                 <Badge variant="secondary">{selectedCategory}</Badge>
-              )}
-            </CardHeader>
-            <CardContent className="text-center">
-              {isGenerating ? (
-                <div className="flex flex-col items-center gap-4 py-8">
-                  <RefreshCw className="w-12 h-12 text-blue-500 animate-spin" />
-                  <p className="text-lg animate-pulse">
-                    Generando excusa épica...
-                  </p>
-                  <div className="flex gap-1">
-                    {[...Array(3)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
-                        style={{ animationDelay: `${i * 0.2}s` }}
-                      />
-                    ))}
-                  </div>
+              </div>
+            )}
+          </DialogHeader>
+
+          <div className="text-center py-4">
+            {isGenerating ? (
+              <div className="flex flex-col items-center gap-4 py-8">
+                <RefreshCw className="w-12 h-12 text-blue-500 animate-spin" />
+                <p className="text-lg animate-pulse">
+                  Generando excusa épica...
+                </p>
+                <div className="flex gap-1">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
+                      style={{ animationDelay: `${i * 0.2}s` }}
+                    />
+                  ))}
                 </div>
-              ) : (
-                <div className="space-y-6">
-                  <blockquote className="text-lg md:text-xl font-medium italic border-l-4 border-pink-500 pl-4 py-2">
-                    "{currentExcuse}"
-                  </blockquote>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <Button
-                      onClick={() => generateExcuse(selectedCategory)}
-                      className="bg-green-500 hover:bg-green-600 text-white"
-                    >
-                      <RefreshCw className="w-5 h-5 mr-2" /> Otra Excusa
-                    </Button>
-                    <Button
-                      onClick={shareExcuse}
-                      variant="outline"
-                      className="border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-                    >
-                      <Share2 className="w-5 h-5 mr-2" /> Compartir
-                    </Button>
-                  </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <blockquote className="text-lg md:text-xl font-medium italic border-l-4 border-pink-500 pl-4 py-2">
+                  "{currentExcuse}"
+                </blockquote>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Button
+                    onClick={() => generateExcuse(selectedCategory)}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <RefreshCw className="w-5 h-5 mr-2" /> Otra Excusa
+                  </Button>
+                  <Button
+                    onClick={shareExcuse}
+                    variant="outline"
+                    className="border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+                  >
+                    <Share2 className="w-5 h-5 mr-2" /> Compartir
+                  </Button>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      )}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {showReaction && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+        <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000]">
           <div className="text-4xl font-bold text-pink-500 animate-bounce bg-gray-800 px-6 py-3 rounded-full shadow-lg border-2 border-pink-500">
             {reaction}
           </div>
