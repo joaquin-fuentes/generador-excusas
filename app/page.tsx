@@ -301,8 +301,8 @@ export default function ExcuseGenerator() {
       </Dialog>
 
       {showReaction && (
-        <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000]">
-          <div className="text-4xl font-bold text-pink-500 animate-bounce bg-gray-800 px-6 py-3 rounded-full shadow-lg border-2 border-pink-500">
+        <div className="fixed top-[80px] md:top-[200px] lg:top-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000] w-[70%] md:w-auto text-center">
+          <div className="text-2xl font-bold text-pink-500 animate-bounce bg-gray-800 px-6 py-3 rounded-full shadow-lg border-2 border-pink-500">
             {reaction}
           </div>
         </div>
