@@ -20,7 +20,7 @@ import {
 const excuseCategories = {
   "Llegar Tarde": {
     icon: Clock,
-    color: "bg-red-coral",
+    color: "bg-red-500",
     excuses: [
       "Me reencarné como un cactus y recién volví a mi forma humana",
       "Estaba viendo el arco de relleno de mi vida y se me fue la hora",
@@ -46,7 +46,7 @@ const excuseCategories = {
   },
   "No Entregar Trabajo": {
     icon: FileX,
-    color: "bg-yellow-vibrant",
+    color: "bg-yellow-500",
     excuses: [
       "Mi archivo fue a una ceremonia de ayahuasca y todavía no volvió",
       "Intenté trabajar pero escuché el opening de Naruto y me distraje llorando",
@@ -72,7 +72,7 @@ const excuseCategories = {
   },
   "Faltar a Reunión": {
     icon: Coffee,
-    color: "bg-green-lime",
+    color: "bg-green-500",
     excuses: [
       "Estaba viendo un AMV de Goku con Linkin Park y se me pasó la hora",
       "Me perdí en una conversación con un caracol sobre el tiempo",
@@ -98,7 +98,7 @@ const excuseCategories = {
   },
   "Problemas Técnicos": {
     icon: Zap,
-    color: "bg-blue-light",
+    color: "bg-blue-500",
     excuses: [
       "Mi PC está entrenando para ser monje y renunció a lo material",
       "La compu me dijo que estaba en su arco de redención y apagó todo",
@@ -151,7 +151,6 @@ export default function ExcuseGenerator() {
       setCurrentExcuse(randomExcuse);
       setIsGenerating(false);
 
-      // Show reaction
       const randomReaction =
         funnyReactions[Math.floor(Math.random() * funnyReactions.length)];
       setReaction(randomReaction);
@@ -168,8 +167,7 @@ export default function ExcuseGenerator() {
           text: `"${currentExcuse}" - Generado por el Simulador de Excusas`,
           url: window.location.href,
         });
-      } catch (err) {
-        // Fallback to clipboard
+      } catch {
         navigator.clipboard.writeText(
           `"${currentExcuse}" - Generado por el Simulador de Excusas`
         );
@@ -182,36 +180,27 @@ export default function ExcuseGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-paper-beige p-4">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-900 text-white p-4">
       <div className="max-w-4xl mx-auto text-center mb-8">
-        <div className="relative">
-          <h1 className="text-4xl md:text-5xl font-bold text-main-dark mb-4 transform hover:scale-105 transition-transform duration-300">
-            🧠 Generador de Excusas
-          </h1>
-          <div className="absolute -top-2 -right-2 animate-bounce">
-            <Star className="w-8 h-8 text-yellow-vibrant fill-current" />
-          </div>
-        </div>
-
-        <p className="text-base md:text-lg text-main-dark/80 mb-6 font-medium">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          🧠 Generador de Excusas
+        </h1>
+        <p className="text-base md:text-lg text-gray-300 mb-6 font-medium">
           Para vos, que no tenés ganas de ir, hacer, rendir o responder. Te
           entendemos.
         </p>
-
-        <div className="flex justify-center items-center gap-2 text-main-dark/60 text-sm">
-          <Heart className="w-5 h-5 text-red-coral fill-current animate-pulse" />
+        <div className="flex justify-center items-center gap-2 text-gray-400 text-sm">
+          <Heart className="w-5 h-5 text-pink-500 animate-pulse" />
           <span>
             Excusas con olor a siesta, mate lavado y resaca existencial
           </span>
-          <Laugh className="w-5 h-5 text-green-lime" />
+          <Laugh className="w-5 h-5 text-green-400" />
         </div>
       </div>
 
-      {/* Category Selection */}
       <div className="max-w-4xl mx-auto mb-8">
-        <h2 className="text-2xl font-bold text-main-dark mb-6 text-center">
-          🎯 Elige tu situación
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          🎯 Elegí tu situación
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(excuseCategories).map(([category, data]) => {
@@ -219,23 +208,21 @@ export default function ExcuseGenerator() {
             return (
               <Card
                 key={category}
-                className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg border-2 ${
+                className={`cursor-pointer hover:scale-105 transition-transform border-2 ${
                   selectedCategory === category
-                    ? "border-main-dark shadow-lg scale-105"
-                    : "border-main-dark/20 hover:border-main-dark/40"
-                } bg-white/90 backdrop-blur-sm`}
+                    ? "border-white"
+                    : "border-gray-600 hover:border-white"
+                } bg-gray-800`}
                 onClick={() => generateExcuse(category)}
               >
                 <CardContent className="p-6 text-center">
                   <div
-                    className={`w-16 h-16 ${data.color} rounded-full flex items-center justify-center mx-auto mb-4 transform transition-transform hover:rotate-12`}
+                    className={`w-16 h-16 ${data.color} rounded-full flex items-center justify-center mx-auto mb-4`}
                   >
                     <IconComponent className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="font-bold text-main-dark mb-2">{category}</h3>
-                  <p className="text-sm text-main-dark/70">
-                    Click para generar
-                  </p>
+                  <h3 className="font-bold mb-2">{category}</h3>
+                  <p className="text-sm text-gray-400">Click para generar</p>
                 </CardContent>
               </Card>
             );
@@ -243,36 +230,31 @@ export default function ExcuseGenerator() {
         </div>
       </div>
 
-      {/* Excuse Display */}
       {(currentExcuse || isGenerating) && (
         <div className="max-w-3xl mx-auto mb-8">
-          <Card className="border-2 border-main-dark/20 bg-white/95 backdrop-blur-sm shadow-xl">
+          <Card className="border-2 border-gray-700 bg-gray-800 shadow-xl">
             <CardHeader className="text-center pb-4">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <AlertTriangle className="w-6 h-6 text-yellow-vibrant" />
-                <CardTitle className="text-xl text-main-dark">
-                  Tu Excusa Épica
-                </CardTitle>
-                <AlertTriangle className="w-6 h-6 text-yellow-vibrant" />
+                <AlertTriangle className="w-6 h-6 text-yellow-400" />
+                <CardTitle className="text-xl">Tu Excusa Épica</CardTitle>
+                <AlertTriangle className="w-6 h-6 text-yellow-400" />
               </div>
               {selectedCategory && (
-                <Badge variant="secondary" className="bg-red-coral text-white">
-                  {selectedCategory}
-                </Badge>
+                <Badge variant="secondary">{selectedCategory}</Badge>
               )}
             </CardHeader>
             <CardContent className="text-center">
               {isGenerating ? (
                 <div className="flex flex-col items-center gap-4 py-8">
-                  <RefreshCw className="w-12 h-12 text-blue-light animate-spin" />
-                  <p className="text-lg text-main-dark animate-pulse">
+                  <RefreshCw className="w-12 h-12 text-blue-500 animate-spin" />
+                  <p className="text-lg animate-pulse">
                     Generando excusa épica...
                   </p>
                   <div className="flex gap-1">
                     {[...Array(3)].map((_, i) => (
                       <div
                         key={i}
-                        className="w-2 h-2 bg-blue-light rounded-full animate-bounce"
+                        className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
                         style={{ animationDelay: `${i * 0.2}s` }}
                       />
                     ))}
@@ -280,26 +262,22 @@ export default function ExcuseGenerator() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <blockquote className="text-lg md:text-xl text-main-dark font-medium leading-relaxed italic border-l-4 border-red-coral pl-4 py-2">
+                  <blockquote className="text-lg md:text-xl font-medium italic border-l-4 border-pink-500 pl-4 py-2">
                     "{currentExcuse}"
                   </blockquote>
-
                   <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <Button
                       onClick={() => generateExcuse(selectedCategory)}
-                      className="bg-green-lime hover:bg-green-lime/90 text-white font-bold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg"
+                      className="bg-green-500 hover:bg-green-600 text-white"
                     >
-                      <RefreshCw className="w-5 h-5 mr-2" />
-                      Otra Excusa
+                      <RefreshCw className="w-5 h-5 mr-2" /> Otra Excusa
                     </Button>
-
                     <Button
                       onClick={shareExcuse}
                       variant="outline"
-                      className="border-2 border-blue-light text-blue-light hover:bg-blue-light hover:text-white font-bold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                      className="border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
                     >
-                      <Share2 className="w-5 h-5 mr-2" />
-                      Compartir
+                      <Share2 className="w-5 h-5 mr-2" /> Compartir
                     </Button>
                   </div>
                 </div>
@@ -309,27 +287,25 @@ export default function ExcuseGenerator() {
         </div>
       )}
 
-      {/* Reaction Animation */}
       {showReaction && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-          <div className="text-4xl font-bold text-red-coral animate-bounce bg-white/90 px-6 py-3 rounded-full shadow-lg border-2 border-red-coral">
+          <div className="text-4xl font-bold text-pink-500 animate-bounce bg-gray-800 px-6 py-3 rounded-full shadow-lg border-2 border-pink-500">
             {reaction}
           </div>
         </div>
       )}
 
-      {/* Footer */}
       <div className="max-w-4xl mx-auto text-center mt-12">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border-2 border-main-dark/10">
-          <p className="text-main-dark/70 mb-4">
+        <div className="bg-gray-800 rounded-2xl p-6 border-2 border-gray-700">
+          <p className="text-gray-400 mb-4">
             🛑 <strong>Advertencia:</strong> Este generador no resuelve tu vida,
             pero al menos te hace zafar con estilo.
           </p>
-          <div className="flex justify-center items-center gap-4 text-sm text-main-dark/60">
+          <div className="flex justify-center items-center gap-4 text-sm text-gray-500">
             <span>Hecho con cero ganas de trabajar</span>
-            <Heart className="w-4 h-4 text-red-coral fill-current animate-pulse" />
+            <Heart className="w-4 h-4 text-pink-500 animate-pulse" />
             <span>pero mucho compromiso con el chamuyo</span>
-            <Laugh className="w-4 h-4 text-green-lime" />
+            <Laugh className="w-4 h-4 text-green-400" />
           </div>
         </div>
       </div>
